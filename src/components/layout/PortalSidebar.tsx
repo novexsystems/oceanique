@@ -33,7 +33,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
+import { useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   LayoutDashboard,
   Anchor,
@@ -43,6 +44,7 @@ import {
   MessageCircle,
   Globe,
   LogOut,
+  X,
   type LucideIcon,
 } from "lucide-react";
 import { navigationConfig } from "@/config/navigation.config";
@@ -50,6 +52,7 @@ import { siteConfig } from "@/config/site.config";
 import { portalConfig } from "@/config/portal.config";
 import { useAuth } from "@/hooks/useAuth";
 import { useAvatar } from "@/contexts/AvatarContext";
+import { useSidebar } from "@/contexts/SidebarContext";
 
 /**
  * Lucide icon lookup map.
@@ -82,6 +85,11 @@ export function PortalSidebar() {
   const pathname = usePathname();
   const { logout } = useAuth();
   const { sidebar, sidebarBottom } = navigationConfig.portal;
+  /** Mobile drawer open/close state shared with PortalTopBar via SidebarContext. */
+  const { isOpen, close } = useSidebar();
+
+  /** Close the mobile drawer whenever the active route changes. */
+  useEffect(() => { close(); }, [pathname]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /* ── Customer data for the mini-card ── */
   const { firstName, lastName, membershipTier } = portalConfig.customerProfile;
@@ -114,10 +122,37 @@ export function PortalSidebar() {
   };
 
   return (
-    <aside className="fixed top-0 left-0 h-full w-64 bg-sidebar border-r border-sidebar-border flex flex-col z-40">
+    <>
+      {/* ── Mobile backdrop — shown below the drawer on small screens ── */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            key="portal-sidebar-backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 bg-black/50 z-30 lg:hidden"
+            onClick={close}
+          />
+        )}
+      </AnimatePresence>
+
+      {/*
+       * sidebar-drawer  — base transition (transform 0.3s ease-in-out)
+       * sidebar-open    — translateX(0)   when drawer is open
+       * sidebar-closed  — translateX(-100%) when drawer is closed
+       * Both classes resolve to transform:none on lg+ so the sidebar
+       * is always visible on desktop regardless of isOpen state.
+       * Defined in globals.css — not scanned by Tailwind v4 so always present.
+       */}
+      <aside className={`
+        fixed top-0 left-0 h-full w-64 bg-sidebar border-r border-sidebar-border flex flex-col z-40
+        sidebar-drawer ${isOpen ? "sidebar-open" : "sidebar-closed"}
+      `}>
 
       {/* ── Brand / logo header ── */}
-      <div className="h-16 flex items-center px-6 border-b border-sidebar-border flex-shrink-0">
+      <div className="h-16 flex items-center justify-between px-6 border-b border-sidebar-border flex-shrink-0">
         <div className="flex flex-col">
           <Link
             href="/"
@@ -129,6 +164,14 @@ export function PortalSidebar() {
             Guest Portal
           </span>
         </div>
+        {/* Close button — visible on mobile only */}
+        <button
+          onClick={close}
+          className="lg:hidden text-muted-foreground hover:text-foreground transition-colors p-1"
+          aria-label="Close menu"
+        >
+          <X size={18} />
+        </button>
       </div>
 
       {/* ── Main navigation ── */}
@@ -260,6 +303,7 @@ export function PortalSidebar() {
           })}
         </div>
       </div>
-    </aside>
+      </aside>
+    </>
   );
 }

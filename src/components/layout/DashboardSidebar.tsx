@@ -139,12 +139,19 @@ export function DashboardSidebar() {
         )}
       </AnimatePresence>
 
+      {/*
+       * sidebar-drawer  — base transition (transform 0.3s ease-in-out)
+       * sidebar-open    — translateX(0)   when drawer is open
+       * sidebar-closed  — translateX(-100%) when drawer is closed
+       * Both classes resolve to transform:none on lg+ so the sidebar
+       * is always visible on desktop regardless of isOpen state.
+       * These are static CSS utilities in globals.css — immune to the
+       * Tailwind v4 scanner's inability to detect dynamic class names.
+       */}
       <aside
         className={`
           fixed top-0 left-0 h-full w-64 bg-sidebar border-r border-sidebar-border flex flex-col z-40
-          transition-transform duration-300 ease-in-out
-          ${isOpen ? "translate-x-0" : "-translate-x-full"}
-          lg:translate-x-0
+          sidebar-drawer ${isOpen ? "sidebar-open" : "sidebar-closed"}
         `}
       >
 

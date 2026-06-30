@@ -269,6 +269,39 @@
     transition-timing-function: ease;
   }
 
+  /*
+   * ── Mobile sidebar drawer utilities ──────────────────────────
+   * These replace the Tailwind v4-incompatible dynamic ternary pattern:
+   *   ${isOpen ? "translate-x-0" : "-translate-x-full"}
+   * Tailwind v4's scanner cannot reliably detect classes built inside
+   * template-literal ternaries, so those classes are never generated.
+   *
+   * Defining them here as static CSS utilities means they are ALWAYS
+   * compiled — no scanning needed.
+   *
+   *  .sidebar-drawer  — applies the CSS transition (always on)
+   *  .sidebar-closed  — slides the sidebar off-screen to the left
+   *  .sidebar-open    — brings it back into view
+   *  @media lg+       — overrides both so desktop sidebar is always visible
+   * ─────────────────────────────────────────────────────────────
+   */
+  .sidebar-drawer {
+    transition: transform 0.3s ease-in-out;
+  }
+  .sidebar-closed {
+    transform: translateX(-100%);
+  }
+  .sidebar-open {
+    transform: translateX(0);
+  }
+  @media (min-width: 1024px) {
+    .sidebar-closed,
+    .sidebar-open {
+      /* On desktop the sidebar is always visible — ignore open/closed state */
+      transform: none;
+    }
+  }
+
   /* Thin gold underline decoration */
   .gold-underline {
     position: relative;

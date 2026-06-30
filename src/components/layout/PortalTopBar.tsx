@@ -42,6 +42,7 @@ import {
   Bell, Crown, Sun, Moon, Search, X, Anchor, FileText,
   AlertTriangle, User, ChevronRight, LogOut, Check,
   LayoutDashboard, BookOpen, MessageCircle, Globe,
+  Menu,
   type LucideIcon,
 } from "lucide-react";
 import Link from "next/link";
@@ -50,6 +51,7 @@ import { useDashboardTheme } from "@/contexts/DashboardThemeContext";
 import { navigationConfig } from "@/config/navigation.config";
 import { portalConfig } from "@/config/portal.config";
 import { useAvatar } from "@/contexts/AvatarContext";
+import { useSidebar } from "@/contexts/SidebarContext";
 
 /** Shared easing for dropdown animations. */
 const EASE = [0.25, 0.1, 0, 1] as const;
@@ -203,9 +205,11 @@ export function PortalTopBar() {
   const pathname   = usePathname();
   const router     = useRouter();
   const { session, logout } = useAuth();
-  const { theme, toggle }   = useDashboardTheme();
+  const { theme, toggle }        = useDashboardTheme();
+  /** Mobile sidebar drawer toggle — shared with PortalSidebar via SidebarContext. */
+  const { toggle: toggleSidebar } = useSidebar();
   /** Profile picture shared with PortalSidebar and DashboardTopBar. */
-  const { avatarUrl }       = useAvatar();
+  const { avatarUrl }             = useAvatar();
 
   /* ── Dropdown / overlay open state ── */
 
@@ -320,10 +324,23 @@ export function PortalTopBar() {
   return (
     <>
       {/* ── Top bar ── */}
-      <header className="fixed top-0 left-64 right-0 h-16 bg-background/95 backdrop-blur border-b border-sidebar-border z-30 flex items-center justify-between px-8">
+      {/*
+       * left-0 lg:left-64 — on mobile the sidebar is a slide-in overlay so
+       * the top bar spans the full width; on desktop it is offset by the
+       * fixed sidebar width (256 px / 16 rem = w-64).
+       */}
+      <header className="fixed top-0 left-0 lg:left-64 right-0 h-16 bg-background/95 backdrop-blur border-b border-sidebar-border z-30 flex items-center justify-between px-4 lg:px-8">
 
-        {/* Left — page title */}
-        <div>
+        {/* Left — hamburger (mobile) + page title */}
+        <div className="flex items-center gap-3">
+          {/* Mobile menu toggle — hidden on desktop where sidebar is always visible */}
+          <button
+            onClick={toggleSidebar}
+            className="lg:hidden text-muted-foreground hover:text-foreground transition-colors p-1"
+            aria-label="Open navigation menu"
+          >
+            <Menu size={20} />
+          </button>
           <h2 className="font-heading text-lg text-foreground leading-none">{pageTitle}</h2>
         </div>
 
