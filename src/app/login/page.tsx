@@ -203,7 +203,7 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder={siteConfig.auth.demoEmail}
-                className="w-full bg-white border border-stone-200 text-midnight placeholder:text-stone-300 font-body text-sm px-4 py-3.5 focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/10 transition-colors"
+                className="w-full bg-white border border-stone-200 text-midnight placeholder:text-stone-300 font-body text-base px-4 py-3.5 focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/10 transition-colors"
               />
             </div>
 
@@ -224,7 +224,7 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••••"
-                  className="w-full bg-white border border-stone-200 text-midnight placeholder:text-stone-300 font-body text-sm px-4 py-3.5 pr-12 focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/10 transition-colors"
+                  className="w-full bg-white border border-stone-200 text-midnight placeholder:text-stone-300 font-body text-base px-4 py-3.5 pr-12 focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/10 transition-colors"
                 />
                 <button
                   type="button"

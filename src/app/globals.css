@@ -20,6 +20,23 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/*
+ * ── iOS Safari: prevent auto-zoom on input focus ─────────────
+ * Safari on iPhone/iPad zooms in when a form field has font-size
+ * below 16 px (1 rem). This rule is intentionally placed OUTSIDE
+ * any @layer so it sits in the unlayered cascade — which beats all
+ * @layer utilities (including Tailwind's text-sm / text-xs classes)
+ * without needing !important.
+ *
+ * Excludes checkbox / radio / range since those have no text input.
+ * ─────────────────────────────────────────────────────────────
+ */
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+textarea,
+select {
+  font-size: 1rem;
+}
+
 /* -------------------------------------------------------------
    OCEANIQUE BRAND TOKENS
    Custom color palette exposed as Tailwind utility classes:

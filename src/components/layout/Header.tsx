@@ -56,6 +56,17 @@ export function Header() {
     setMobileOpen(false);
   }, [pathname]);
 
+  /*
+   * Lock body scroll while the mobile menu overlay is open.
+   * Without this the scrollbar thumb still moves (visible feedback)
+   * and the user can scroll the page content behind the menu.
+   * The cleanup function restores scroll on close OR unmount.
+   */
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [mobileOpen]);
+
   const navLinks = navigationConfig.website.main;
 
   return (

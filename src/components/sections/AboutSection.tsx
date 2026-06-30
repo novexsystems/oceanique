@@ -57,8 +57,14 @@ export function AboutSection() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
+  /*
+   * overflow-hidden is required on the section because the image column
+   * starts at initial={{ x: 40 }} — 40 px right of its resting position.
+   * Without clipping this overflows the viewport and creates a white
+   * dead-zone on the right side of the page on mobile.
+   */
   return (
-    <section className="bg-white py-24 px-6">
+    <section className="bg-white py-24 px-6 overflow-hidden">
       <div ref={ref} className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         {/* Text — slides in from the left */}
         <motion.div
