@@ -1,0 +1,285 @@
+/* =============================================================
+   OCEANIQUE — GLOBAL STYLES
+   =============================================================
+   This file controls all base styles, CSS custom properties,
+   and Tailwind theme token overrides.
+
+   CUSTOMIZE:
+   - To change brand colors: update the hex values in the
+     "OCEANIQUE BRAND TOKENS" section below, AND update the
+     matching values in src/config/theme.config.ts.
+   - To change the ShadCN component theme colors: update the
+     CSS variables in the ":root" block.
+   - To change fonts: update --font-heading / --font-body here
+     AND the font imports in src/app/layout.tsx.
+   ============================================================= */
+
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* -------------------------------------------------------------
+   OCEANIQUE BRAND TOKENS
+   Custom color palette exposed as Tailwind utility classes:
+     bg-midnight   text-midnight   border-midnight
+     bg-gold       text-gold       border-gold
+     bg-silver     text-silver     border-silver
+   ------------------------------------------------------------- */
+@theme {
+  /* Midnight Black — #0A0F1A */
+  --color-midnight:      #0A0F1A;
+  --color-midnight-light: #111827;
+  --color-midnight-mid:  #0D1526;
+
+  /* Rich Gold — #C9A227 */
+  --color-gold:          #C9A227;
+  --color-gold-light:    #D4B245;
+  --color-gold-dark:     #A8851E;
+  --color-gold-muted:    rgba(201, 162, 39, 0.15);
+
+  /* Silver Gray — #E5E7EB */
+  --color-silver:        #E5E7EB;
+  --color-silver-dark:   #9CA3AF;
+
+  /* Typography */
+  --font-heading: var(--font-cormorant);
+  --font-body:    var(--font-montserrat);
+  --font-sans:    var(--font-montserrat);
+  --font-mono:    var(--font-geist-mono);
+}
+
+/* -------------------------------------------------------------
+   SHADCN / TAILWIND THEME INLINE TOKENS
+   Maps CSS custom properties to Tailwind color utilities.
+   Edit the :root block below to change component theming.
+   ------------------------------------------------------------- */
+@theme inline {
+  --color-background:              var(--background);
+  --color-foreground:              var(--foreground);
+  --color-card:                    var(--card);
+  --color-card-foreground:         var(--card-foreground);
+  --color-popover:                 var(--popover);
+  --color-popover-foreground:      var(--popover-foreground);
+  --color-primary:                 var(--primary);
+  --color-primary-foreground:      var(--primary-foreground);
+  --color-secondary:               var(--secondary);
+  --color-secondary-foreground:    var(--secondary-foreground);
+  --color-muted:                   var(--muted);
+  --color-muted-foreground:        var(--muted-foreground);
+  --color-accent:                  var(--accent);
+  --color-accent-foreground:       var(--accent-foreground);
+  --color-destructive:             var(--destructive);
+  --color-border:                  var(--border);
+  --color-input:                   var(--input);
+  --color-ring:                    var(--ring);
+  --color-chart-1:                 var(--chart-1);
+  --color-chart-2:                 var(--chart-2);
+  --color-chart-3:                 var(--chart-3);
+  --color-chart-4:                 var(--chart-4);
+  --color-chart-5:                 var(--chart-5);
+  --color-sidebar:                 var(--sidebar);
+  --color-sidebar-foreground:      var(--sidebar-foreground);
+  --color-sidebar-primary:         var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent:          var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border:          var(--sidebar-border);
+  --color-sidebar-ring:            var(--sidebar-ring);
+  --radius-sm:  calc(var(--radius) * 0.6);
+  --radius-md:  calc(var(--radius) * 0.8);
+  --radius-lg:  var(--radius);
+  --radius-xl:  calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* -------------------------------------------------------------
+   LIGHT THEME (DEFAULT)
+   ShadCN component color tokens — light mode.
+   Primary is mapped to Rich Gold for branded components.
+   ------------------------------------------------------------- */
+:root {
+  /* Surfaces */
+  --background:         oklch(1 0 0);           /* Pure White */
+  --foreground:         oklch(0.09 0.015 264);  /* Midnight Black */
+  --card:               oklch(1 0 0);
+  --card-foreground:    oklch(0.09 0.015 264);
+  --popover:            oklch(1 0 0);
+  --popover-foreground: oklch(0.09 0.015 264);
+
+  /* Primary = Rich Gold */
+  --primary:            oklch(0.68 0.13 85);    /* #C9A227 */
+  --primary-foreground: oklch(0.09 0.015 264);  /* Dark text on gold */
+
+  /* Secondary = Silver */
+  --secondary:          oklch(0.93 0 0);
+  --secondary-foreground: oklch(0.09 0.015 264);
+
+  /* Muted / Accent */
+  --muted:              oklch(0.96 0 0);
+  --muted-foreground:   oklch(0.5 0 0);
+  --accent:             oklch(0.93 0 0);
+  --accent-foreground:  oklch(0.09 0.015 264);
+
+  /* States */
+  --destructive:        oklch(0.577 0.245 27.325);
+  --border:             oklch(0.88 0 0);
+  --input:              oklch(0.88 0 0);
+  --ring:               oklch(0.68 0.13 85);    /* Gold ring */
+
+  /* Charts (gold → silver → neutral scale) */
+  --chart-1: oklch(0.68 0.13 85);
+  --chart-2: oklch(0.60 0.10 85);
+  --chart-3: oklch(0.50 0.07 85);
+  --chart-4: oklch(0.40 0.04 85);
+  --chart-5: oklch(0.30 0.02 85);
+
+  --radius: 0.375rem;
+
+  /* Sidebar (light) */
+  --sidebar:                     oklch(0.98 0 0);
+  --sidebar-foreground:          oklch(0.09 0.015 264);
+  --sidebar-primary:             oklch(0.68 0.13 85);
+  --sidebar-primary-foreground:  oklch(0.09 0.015 264);
+  --sidebar-accent:              oklch(0.94 0 0);
+  --sidebar-accent-foreground:   oklch(0.09 0.015 264);
+  --sidebar-border:              oklch(0.88 0 0);
+  --sidebar-ring:                oklch(0.68 0.13 85);
+}
+
+/* -------------------------------------------------------------
+   DARK THEME
+   Used for the dashboard and any dark-mode pages.
+   Background = Midnight Black, Primary = Rich Gold.
+   ------------------------------------------------------------- */
+.dark {
+  /* Surfaces — medium dark navy (~#2D3650) so elements are clearly distinct */
+  --background:         oklch(0.24 0.015 264);  /* ~#2D3650 — visible dark navy */
+  --foreground:         oklch(0.96 0 0);
+  --card:               oklch(0.31 0.015 264);  /* ~#38415C — clearly lighter than bg */
+  --card-foreground:    oklch(0.96 0 0);
+  --popover:            oklch(0.31 0.015 264);
+  --popover-foreground: oklch(0.96 0 0);
+
+  /* Primary = Rich Gold */
+  --primary:            oklch(0.68 0.13 85);
+  --primary-foreground: oklch(0.12 0.015 264);
+
+  /* Secondary = surface above card */
+  --secondary:          oklch(0.37 0.015 264);
+  --secondary-foreground: oklch(0.96 0 0);
+
+  /* Muted / Accent */
+  --muted:              oklch(0.37 0.015 264);
+  --muted-foreground:   oklch(0.80 0 0);        /* Comfortable reading contrast */
+  --accent:             oklch(0.38 0.015 264);
+  --accent-foreground:  oklch(0.96 0 0);
+
+  /* States */
+  --destructive:        oklch(0.704 0.191 22.216);
+  --border:             oklch(1 0 0 / 20%);     /* Clearly visible separators */
+  --input:              oklch(1 0 0 / 18%);
+  --ring:               oklch(0.68 0.13 85);
+
+  /* Charts */
+  --chart-1: oklch(0.68 0.13 85);
+  --chart-2: oklch(0.60 0.10 85);
+  --chart-3: oklch(0.50 0.07 85);
+  --chart-4: oklch(0.40 0.04 85);
+  --chart-5: oklch(0.30 0.02 85);
+
+  /* Sidebar — distinctly darker than the main background */
+  --sidebar:                     oklch(0.19 0.015 264);  /* ~#222B40 — clearly darker */
+  --sidebar-foreground:          oklch(0.96 0 0);
+  --sidebar-primary:             oklch(0.68 0.13 85);
+  --sidebar-primary-foreground:  oklch(0.12 0.015 264);
+  --sidebar-accent:              oklch(0.28 0.015 264);
+  --sidebar-accent-foreground:   oklch(0.96 0 0);
+  --sidebar-border:              oklch(1 0 0 / 18%);
+  --sidebar-ring:                oklch(0.68 0.13 85);
+}
+
+/* -------------------------------------------------------------
+   BASE LAYER — Global element defaults
+   ------------------------------------------------------------- */
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    @apply font-body scroll-smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground min-h-screen antialiased;
+  }
+
+  /* Heading elements use the luxury serif font */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+}
+
+/* -------------------------------------------------------------
+   UTILITIES — Custom reusable classes
+   ------------------------------------------------------------- */
+@layer utilities {
+  /* Gold shimmer effect for decorative elements */
+  .gold-shimmer {
+    background: linear-gradient(
+      135deg,
+      #C9A227 0%,
+      #D4B245 40%,
+      #C9A227 60%,
+      #A8851E 100%
+    );
+  }
+
+  /* Gradient overlay for hero/video sections.
+     Tune the opacity stops to control how much of the video shows through.
+     Top is nearly transparent to let the sky colours breathe;
+     bottom is darkened enough to keep white text legible. */
+  .overlay-midnight {
+    background: linear-gradient(
+      to bottom,
+      rgba(10, 15, 26, 0.08) 0%,
+      rgba(10, 15, 26, 0.25) 50%,
+      rgba(10, 15, 26, 0.70) 100%
+    );
+  }
+
+  /* Gold text gradient */
+  .text-gold-gradient {
+    background: linear-gradient(135deg, #D4B245 0%, #C9A227 50%, #A8851E 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Dashboard light/dark theme — smooth color transitions on all children.
+     Framer Motion uses transform/opacity so there is no conflict. */
+  .dash-transitions,
+  .dash-transitions * {
+    transition-property: background-color, border-color, color, fill, stroke;
+    transition-duration: 400ms;
+    transition-timing-function: ease;
+  }
+
+  /* Thin gold underline decoration */
+  .gold-underline {
+    position: relative;
+  }
+  .gold-underline::after {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: #C9A227;
+  }
+}
