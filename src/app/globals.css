@@ -229,6 +229,9 @@ select {
 
   html {
     @apply font-body scroll-smooth;
+    /* Clip horizontal overflow at the viewport level.
+       `clip` preserves scroll-behavior and position:sticky. */
+    overflow-x: clip;
   }
 
   body {

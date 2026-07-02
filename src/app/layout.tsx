@@ -15,7 +15,7 @@
  * ============================================================
  */
 
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Montserrat, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { siteConfig } from "@/config/site.config";
@@ -68,6 +68,16 @@ const geistMono = Geist_Mono({
    Pulled from site.config.ts — edit the seo object there
    to change title, description, and social preview tags.
    ---------------------------------------------------------- */
+/**
+ * Explicit viewport meta tag — ensures correct mobile scaling.
+ * Without this some Next.js versions omit or misconfigure the tag,
+ * causing the page to render at desktop width and scale down on mobile.
+ */
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.seo.canonicalUrl),
   title: {
