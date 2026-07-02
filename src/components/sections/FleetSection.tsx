@@ -282,8 +282,8 @@ export function FleetSection({ showAll = false }: FleetSectionProps) {
                         className="font-heading text-3xl text-midnight"
                       >
                         {priceMode === "day"
-                          ? `$${boat.pricing.perDay.toLocaleString()}`
-                          : `$${boat.pricing.perHour.toLocaleString()}`}
+                          ? `$${boat.pricing.perDay.toLocaleString("en-US")}`
+                          : `$${boat.pricing.perHour.toLocaleString("en-US")}`}
                         <span className="text-sm text-silver-dark font-body font-light ml-1">
                           {priceMode === "day" ? "/day" : "/hr"}
                         </span>

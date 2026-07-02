@@ -233,6 +233,10 @@ select {
 
   body {
     @apply bg-background text-foreground min-h-screen antialiased;
+    /* Clip horizontal overflow caused by x-direction entrance animations.
+       `clip` (not `hidden`) is intentional — it does not create a new scroll
+       container, so position:sticky on the Header continues to work correctly. */
+    overflow-x: clip;
   }
 
   /* Heading elements use the luxury serif font */
