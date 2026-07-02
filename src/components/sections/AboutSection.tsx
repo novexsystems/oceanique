@@ -33,10 +33,17 @@ import { motion, useInView } from "framer-motion";
 import { SectionHeading } from "@/components/common/SectionHeading";
 import { siteConfig } from "@/config/site.config";
 
+// ─────────────────────────────────────────────────────────────────────────────
+// ✏️  EDIT HERE — All about section content
+// ─────────────────────────────────────────────────────────────────────────────
 /**
  * Edit this object to change the About section text content.
  * These values are separate from site.config.ts so you can
  * have different text on the homepage vs the /about page.
+ *
+ * To change the photo: replace /public/images/about/about-image.jpg
+ * with your own file and keep the same filename, or update the
+ * src path inside the <img> element in the JSX below.
  */
 const content = {
   eyebrow: "Our Story",

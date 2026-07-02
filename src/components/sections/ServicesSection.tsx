@@ -33,13 +33,38 @@ import {
   Map,
   Utensils,
   Waves,
+  ArrowRight,
   type LucideIcon,
 } from "lucide-react";
 import { SectionHeading } from "@/components/common/SectionHeading";
+import { useWebsiteBooking } from "@/contexts/WebsiteBookingContext";
 
+// ─────────────────────────────────────────────────────────────────────────────
+// ✏️  EDIT HERE — Section heading copy
+// ─────────────────────────────────────────────────────────────────────────────
+/** Heading text above the service cards grid. */
+const HEADING = {
+  eyebrow: "What We Offer",
+  title: "Experiences Crafted for You",
+  description: "Every charter is a tailored journey. We handle every detail so you can focus entirely on the pleasure of the sea.",
+  /** Eyebrow label on the bottom CTA block. */
+  ctaEyebrow: "Ready to set sail?",
+  /** Label on the gold Book CTA button. */
+  ctaLabel: "Book Your Charter",
+} as const;
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ✏️  EDIT HERE — Service cards
+// ─────────────────────────────────────────────────────────────────────────────
 /**
- * Edit this array to change the displayed services.
- * `icon` must match a key in `iconMap` below.
+ * Edit this array to change the displayed service cards.
+ *  - icon        : name of a Lucide icon (must be imported in iconMap below)
+ *  - title       : card headline
+ *  - description : short body text (1–2 sentences recommended)
+ *
+ * Available icons: Anchor, Star, Briefcase, Map, Utensils, Waves
+ * Add more by importing them above and adding them to iconMap.
+ * Browse all icons at https://lucide.dev/icons/
  */
 const services: { icon: string; title: string; description: string }[] = [
   {
@@ -124,13 +149,17 @@ function ServiceCard({
 }
 
 export function ServicesSection() {
+  /** Opens the 4-step charter booking modal. */
+  const { open: openBookingModal } = useWebsiteBooking();
+
   return (
     <section className="bg-midnight py-24 px-6">
       <div className="max-w-7xl mx-auto">
+        {/* Heading — edit HEADING above */}
         <SectionHeading
-          eyebrow="What We Offer"
-          title="Experiences Crafted for You"
-          description="Every charter is a tailored journey. We handle every detail so you can focus entirely on the pleasure of the sea."
+          eyebrow={HEADING.eyebrow}
+          title={HEADING.title}
+          description={HEADING.description}
           light
         />
 
@@ -139,6 +168,72 @@ export function ServicesSection() {
             <ServiceCard key={service.title} service={service} index={i} />
           ))}
         </div>
+
+        {/* ── Book CTA — gold gradient + shimmer, matches hero / header CTAs ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.6, delay: 0.3, ease: [0.25, 0.1, 0, 1] }}
+          className="mt-16 flex flex-col items-center gap-4"
+        >
+          {/* Decorative gold rule above the CTA */}
+          <div
+            className="w-16 h-px mb-2"
+            style={{
+              background:
+                "linear-gradient(90deg, transparent 0%, rgba(201,162,39,0.5) 50%, transparent 100%)",
+            }}
+          />
+
+          {/* Eyebrow — edit HEADING.ctaEyebrow above */}
+          <p className="text-silver/40 text-[11px] font-body tracking-[0.25em] uppercase">
+            {HEADING.ctaEyebrow}
+          </p>
+
+          {/* Gold gradient button with Framer Motion glow lift on hover */}
+          <motion.div
+            initial="rest"
+            whileHover="hover"
+            whileTap={{ scale: 0.97 }}
+            variants={{
+              rest: { y: 0, boxShadow: "0 0 0px rgba(201,162,39,0)" },
+              hover: {
+                y: -3,
+                boxShadow:
+                  "0 10px 32px rgba(201,162,39,0.45), 0 4px 12px rgba(201,162,39,0.28)",
+                transition: { duration: 0.25, ease: "easeOut" },
+              },
+            }}
+            className="relative overflow-hidden"
+          >
+            <button
+              onClick={() => openBookingModal()}
+              aria-label="Open charter booking form"
+              className="relative flex items-center gap-3 px-10 py-4 text-midnight text-[11px] font-body font-bold tracking-[0.28em] uppercase overflow-hidden"
+              style={{
+                background:
+                  "linear-gradient(135deg, #D4B245 0%, #C9A227 50%, #A8851E 100%)",
+              }}
+            >
+              {/* Diagonal shimmer sweep — same as hero CTA */}
+              <motion.span
+                aria-hidden="true"
+                className="absolute inset-0 -skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none"
+                variants={{
+                  rest: { x: "-130%" },
+                  hover: {
+                    x: "230%",
+                    transition: { duration: 0.55, ease: "easeInOut" },
+                  },
+                }}
+              />
+              {/* CTA label — edit HEADING.ctaLabel above */}
+              <span className="relative z-10">{HEADING.ctaLabel}</span>
+              <ArrowRight size={13} className="relative z-10" aria-hidden />
+            </button>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );

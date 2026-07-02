@@ -30,10 +30,10 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 import { Check, ArrowRight } from "lucide-react";
 import { boatsConfig } from "@/config/boats.config";
 import { siteConfig } from "@/config/site.config";
@@ -76,6 +76,10 @@ export function FleetSection({ showAll = false }: FleetSectionProps) {
   const [priceMode,  setPriceMode]  = useState<"day" | "hour">("day");
   const { open } = useWebsiteBooking();
 
+  /** Ref on the inner content wrapper — gates the heading / tab-bar entrance animation. */
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const isInView   = useInView(sectionRef, { once: true, margin: "-80px" });
+
   /** Guard: never render with an empty fleet. */
   const boat = boats[activeIdx] ?? boats[0];
   if (!boat) return null;
@@ -101,10 +105,15 @@ export function FleetSection({ showAll = false }: FleetSectionProps) {
 
   return (
     <section className="bg-white py-24 lg:py-32 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6">
+      <div ref={sectionRef} className="max-w-7xl mx-auto px-6">
 
         {/* ── Section heading ─────────────────────────────────── */}
-        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-14">
+        <motion.div
+          initial={{ opacity: 0, y: 22 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.65, ease: EASE }}
+          className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-14"
+        >
           <div>
             <p className="text-gold text-[10px] font-body font-medium tracking-[0.35em] uppercase mb-3">
               Our Fleet
@@ -116,10 +125,15 @@ export function FleetSection({ showAll = false }: FleetSectionProps) {
           <p className="text-silver-dark text-sm font-body leading-relaxed max-w-xs text-right hidden sm:block">
             Select a vessel below to explore its specifications, amenities, and pricing.
           </p>
-        </div>
+        </motion.div>
 
         {/* ── Tab bar ─────────────────────────────────────────── */}
-        <div className="relative flex items-end border-b border-silver/40 mb-12 overflow-x-auto gap-0">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.1, ease: EASE }}
+          className="relative flex items-end border-b border-silver/40 mb-12 overflow-x-auto gap-0"
+        >
           {boats.map((b, i) => (
             <button
               key={b.id}
@@ -151,7 +165,7 @@ export function FleetSection({ showAll = false }: FleetSectionProps) {
               )}
             </button>
           ))}
-        </div>
+        </motion.div>
 
         {/* ── Main content grid ────────────────────────────────── */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-0">

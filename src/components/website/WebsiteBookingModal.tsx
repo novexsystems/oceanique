@@ -1189,9 +1189,9 @@ export function WebsiteBookingModal({ isOpen, onClose, initialVesselId, initialC
           /* ── Detail view: slides in from the right ── */
           <motion.div
             key={`detail-${detailVessel.id}`}
-            initial={{ opacity: 0, x: 20  }}
-            animate={{ opacity: 1, x: 0   }}
-            exit={{    opacity: 0, x: 20  }}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0  }}
+            exit={{    opacity: 0, y: 12 }}
             transition={{ duration: 0.2, ease: EASE }}
           >
             {renderVesselDetail()}
@@ -1200,9 +1200,9 @@ export function WebsiteBookingModal({ isOpen, onClose, initialVesselId, initialC
           /* ── Fleet grid: slides in from the left when returning ── */
           <motion.div
             key="vessel-grid"
-            initial={{ opacity: 0, x: -16 }}
-            animate={{ opacity: 1, x: 0   }}
-            exit={{    opacity: 0, x: -16 }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0  }}
+            exit={{    opacity: 0, y: 10 }}
             transition={{ duration: 0.2, ease: EASE }}
           >
             <div className="space-y-4 px-6 py-6">
@@ -1382,7 +1382,7 @@ export function WebsiteBookingModal({ isOpen, onClose, initialVesselId, initialC
       <div className="space-y-4 px-6 py-6">
 
         {/* ── Name ── */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className={LABEL}>First Name *</label>
             <input
@@ -1408,7 +1408,7 @@ export function WebsiteBookingModal({ isOpen, onClose, initialVesselId, initialC
         </div>
 
         {/* ── Contact ── */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className={LABEL}>Email Address *</label>
             <input
@@ -1450,7 +1450,7 @@ export function WebsiteBookingModal({ isOpen, onClose, initialVesselId, initialC
                 autoComplete="street-address"
               />
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className={LABEL}>City *</label>
                 <input
@@ -1809,10 +1809,10 @@ export function WebsiteBookingModal({ isOpen, onClose, initialVesselId, initialC
             animate={{ opacity: 1, scale: 1,    y: 0  }}
             exit={{    opacity: 0, scale: 0.97, y: 16 }}
             transition={{ duration: 0.3, ease: EASE }}
-            className="fixed inset-0 z-[60] flex items-center justify-center p-4 pointer-events-none"
+            className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center p-0 sm:p-4 pointer-events-none"
           >
             <div
-              className="bg-sidebar border border-sidebar-border shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col pointer-events-auto"
+              className="bg-sidebar border border-sidebar-border shadow-2xl w-full sm:max-w-2xl h-[92dvh] sm:h-auto sm:max-h-[90vh] flex flex-col pointer-events-auto overflow-hidden"
               onClick={(e) => e.stopPropagation()}
             >
 
@@ -1899,13 +1899,14 @@ export function WebsiteBookingModal({ isOpen, onClose, initialVesselId, initialC
               })()}
 
               {/* ── Scrollable step body ── */}
-              <div className="flex-1 overflow-y-auto">
+              {/* overflow-x-hidden: prevents horizontal swipe caused by X-axis step-transition animations */}
+              <div className="flex-1 overflow-y-auto overflow-x-hidden">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={submitted ? "success" : step}
-                    initial={{ opacity: 0, x: 12 }}
-                    animate={{ opacity: 1, x: 0  }}
-                    exit={{    opacity: 0, x: -12 }}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0  }}
+                    exit={{    opacity: 0, y: -6  }}
                     transition={{ duration: 0.18, ease: EASE }}
                   >
                     {submitted  ? renderSuccess() :

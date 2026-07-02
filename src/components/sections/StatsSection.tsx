@@ -25,9 +25,14 @@ import { useRef, useEffect } from "react";
 import { motion, useMotionValue, useTransform, animate, useInView } from "framer-motion";
 import { siteConfig } from "@/config/site.config";
 
+// ─────────────────────────────────────────────────────────────────────────────
+// ✏️  EDIT HERE — KPI statistics
+// ─────────────────────────────────────────────────────────────────────────────
 /**
- * Edit this array to change which stats are displayed.
- * `value` is the final number, `suffix` is appended after it.
+ * Edit this array to change the numbers shown in the stats strip.
+ *  - value  : the final animated number
+ *  - suffix : appended after the number (e.g. "+", "%", "k")
+ *  - label  : short descriptor below the number
  */
 const stats = [
   {
@@ -76,12 +81,18 @@ function CountUp({ target, suffix }: { target: number; suffix: string }) {
 }
 
 export function StatsSection() {
+  const ref      = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-40px" });
+
   return (
     <section className="bg-midnight py-16 px-6 border-y border-white/5">
-      <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4">
+      <div ref={ref} className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4">
         {stats.map((stat, i) => (
-          <div
+          <motion.div
             key={i}
+            initial={{ opacity: 0, y: 24 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.55, delay: i * 0.1, ease: [0.25, 0.1, 0, 1] }}
             className={`
               text-center py-6 px-4
               ${i < stats.length - 1 ? "border-r border-white/5" : ""}
@@ -92,7 +103,7 @@ export function StatsSection() {
             <p className="text-silver/50 text-[11px] tracking-[0.25em] uppercase font-body">
               {stat.label}
             </p>
-          </div>
+          </motion.div>
         ))}
       </div>
     </section>

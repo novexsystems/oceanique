@@ -27,8 +27,8 @@
 
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useRef } from "react";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 import { Mail, Phone, MapPin, Clock, CheckCircle } from "lucide-react";
 import { siteConfig } from "@/config/site.config";
 import { SectionHeading } from "@/components/common/SectionHeading";
@@ -36,14 +36,62 @@ import { SectionHeading } from "@/components/common/SectionHeading";
 const LABEL = "block text-silver/50 text-[11px] tracking-[0.15em] uppercase font-body mb-2";
 const INPUT  = "w-full bg-transparent border border-white/10 text-white placeholder:text-silver/25 font-body text-sm px-4 py-3 focus:outline-none focus:border-gold transition-colors";
 
+// ─────────────────────────────────────────────────────────────────────────────
+// ✏️  EDIT HERE — Section heading copy
+// ─────────────────────────────────────────────────────────────────────────────
+/**
+ * Heading text shown in the left column.
+ * Contact details (email, phone, address, hours) are pulled automatically
+ * from src/config/site.config.ts — edit them there.
+ */
+const CONTENT = {
+  /** Small uppercase label above the title. */
+  eyebrow: "Get in Touch",
+  /** Main section title. */
+  title: "Begin Your Journey",
+  /** Short description below the title. */
+  description: "Our charter specialists are available to craft the perfect bespoke experience for you.",
+  /** Success screen title after the form is submitted. */
+  successTitle: "Enquiry Received",
+  /** Success screen body — {name} is replaced with the user's first name. */
+  successBody: (name: string) =>
+    `Thank you, ${name}. Our team will be in touch within 24 hours to discuss your bespoke charter.`,
+  /** Link text on the success screen to submit another message. */
+  successReset: "Send another enquiry",
+  /** Submit button label while idle. */
+  submitLabel: "Send Enquiry",
+  /** Submit button label while the form is submitting. */
+  submittingLabel: "Sending\u2026",
+} as const;
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ✏️  EDIT HERE — Enquiry type dropdown options
+// ─────────────────────────────────────────────────────────────────────────────
+/**
+ * Options shown in the "Enquiry Type" select field.
+ * Add, remove, or rename any entry — the first item is the default.
+ */
+const ENQUIRY_TYPES = [
+  "Day Charter",
+  "Private Event",
+  "Corporate Charter",
+  "Extended Voyage",
+  "General Enquiry",
+] as const;
+
 export function ContactSection() {
   const [firstName, setFirstName] = useState("");
   const [lastName,  setLastName]  = useState("");
   const [email,     setEmail]     = useState("");
-  const [type,      setType]      = useState("Day Charter");
+  /** Default to the first enquiry type defined in ENQUIRY_TYPES above. */
+  const [type,      setType]      = useState<string>(ENQUIRY_TYPES[0]);
   const [message,   setMessage]   = useState("");
   const [sent,      setSent]      = useState(false);
   const [loading,   setLoading]   = useState(false);
+
+  /** Ref on the grid container — gates both column entrance animations. */
+  const ref      = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-60px" });
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -60,14 +108,19 @@ export function ContactSection() {
 
   return (
     <section className="bg-midnight py-24 px-6">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16">
+      <div ref={ref} className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16">
 
-        {/* ---- Left: info ---- */}
-        <div>
+        {/* ---- Left: info — slides in from the left ---- */}
+        <motion.div
+          initial={{ opacity: 0, x: -30 }}
+          animate={isInView ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.75, ease: [0.25, 0.1, 0, 1] }}
+        >
+          {/* Heading — edit CONTENT above */}
           <SectionHeading
-            eyebrow="Get in Touch"
-            title="Begin Your Journey"
-            description="Our charter specialists are available to craft the perfect bespoke experience for you."
+            eyebrow={CONTENT.eyebrow}
+            title={CONTENT.title}
+            description={CONTENT.description}
             align="left"
             light
           />
@@ -94,9 +147,14 @@ export function ContactSection() {
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
 
-        {/* ---- Right: form ---- */}
+        {/* ---- Right: form — slides in from the right ---- */}
+        <motion.div
+          initial={{ opacity: 0, x: 30 }}
+          animate={isInView ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.75, delay: 0.1, ease: [0.25, 0.1, 0, 1] }}
+        >
         <AnimatePresence mode="wait">
           {sent ? (
             <motion.div
@@ -106,16 +164,16 @@ export function ContactSection() {
               className="flex flex-col items-center justify-center text-center py-16"
             >
               <CheckCircle size={48} className="text-gold mb-6" />
-              <h3 className="font-heading text-3xl text-white mb-3">Enquiry Received</h3>
+              <h3 className="font-heading text-3xl text-white mb-3">{CONTENT.successTitle}</h3>
               <div className="w-10 h-px bg-gold mx-auto mb-5" />
               <p className="text-silver/60 font-body text-sm max-w-xs leading-relaxed">
-                Thank you, {firstName}. Our team will be in touch within 24 hours to discuss your bespoke charter.
+                {CONTENT.successBody(firstName)}
               </p>
               <button
                 onClick={() => { setSent(false); setFirstName(""); setLastName(""); setEmail(""); setMessage(""); }}
                 className="mt-8 text-silver/40 text-xs font-body hover:text-gold transition-colors underline underline-offset-4"
               >
-                Send another enquiry
+                {CONTENT.successReset}
               </button>
             </motion.div>
           ) : (
@@ -150,7 +208,8 @@ export function ContactSection() {
                   onChange={(e) => setType(e.target.value)}
                   className="w-full bg-midnight border border-white/10 text-silver font-body text-sm px-4 py-3 focus:outline-none focus:border-gold transition-colors"
                 >
-                  {["Day Charter", "Private Event", "Corporate Charter", "Extended Voyage", "General Enquiry"].map((o) => (
+                  {/* Options — edit ENQUIRY_TYPES above */}
+                  {ENQUIRY_TYPES.map((o) => (
                     <option key={o}>{o}</option>
                   ))}
                 </select>
@@ -174,11 +233,12 @@ export function ContactSection() {
                 disabled={loading}
                 className="w-full px-6 py-4 bg-gold text-midnight text-xs font-body font-semibold tracking-[0.2em] uppercase hover:bg-gold-light disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
               >
-                {loading ? "Sending…" : "Send Enquiry"}
+                {loading ? CONTENT.submittingLabel : CONTENT.submitLabel}
               </button>
             </motion.form>
           )}
         </AnimatePresence>
+        </motion.div>
       </div>
     </section>
   );

@@ -11,10 +11,11 @@
  *  2. HeroSection        — full-screen hero with CTA
  *  3. StatsSection       — animated KPI numbers
  *  4. FleetSection       — fleet preview cards
- *  5. ServicesSection    — services offered
- *  6. AboutSection       — company story
- *  7. TestimonialsSection — client testimonials
- *  8. ContactSection     — contact form / info
+ *  5. ServicesSection              — services offered
+ *  6. SignatureExperienceSection    — The Sunset Tour editorial feature
+ *  7. PremiumExtrasSection     — alternating editorial extras showcase
+ *  8. TestimonialsSection      — client testimonials 2×2 grid
+ *  9. ContactSection           — contact form / info
  *
  * To reorder sections: move the JSX elements below.
  * To hide a section: comment it out or delete the import + element.
@@ -26,7 +27,8 @@ import { HeroSection } from "@/components/sections/HeroSection";
 import { StatsSection } from "@/components/sections/StatsSection";
 import { FleetSection } from "@/components/sections/FleetSection";
 import { ServicesSection } from "@/components/sections/ServicesSection";
-import { AboutSection } from "@/components/sections/AboutSection";
+import { SignatureExperienceSection } from "@/components/sections/SignatureExperienceSection";
+import { PremiumExtrasSection } from "@/components/sections/PremiumExtrasSection";
 import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
 import { ContactSection } from "@/components/sections/ContactSection";
 
@@ -37,7 +39,8 @@ export default function HomePage() {
       <StatsSection />
       <FleetSection />
       <ServicesSection />
-      <AboutSection />
+      <SignatureExperienceSection />
+      <PremiumExtrasSection />
       <TestimonialsSection />
       <ContactSection />
     </WebsiteLayout>

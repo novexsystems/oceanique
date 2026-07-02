@@ -65,7 +65,7 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-midnight border-t border-white/5">
+    <footer className="bg-[#060912] border-t border-white/[0.08]">
       {/* ---- Main footer grid ---- */}
       <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
@@ -159,7 +159,7 @@ export function Footer() {
       </div>
 
       {/* ---- Copyright bar ---- */}
-      <div className="border-t border-white/5 py-6 px-6">
+      <div className="border-t border-white/[0.08] py-6 px-6">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-silver/30 text-xs font-body">
             © {year} {siteConfig.brand.name}. All rights reserved.
